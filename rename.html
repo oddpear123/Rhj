@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vault</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap');
+
+        :root {
+            --bg-color: #050002;
+            --text-color: #ff0033;
+            --accent: #ff0033;
+            --font-family: 'Inter', sans-serif;
+            --transition: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden; 
+            overflow-y: auto;
+        }
+
+        /* Scanlines */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 51, 0.1) 3px, rgba(0, 0, 0, 0.3) 3px);
+            pointer-events: none;
+            z-index: 999;
+        }
+        .container {
+            text-align: center;
+            z-index: 10;
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem 2rem 5rem 2rem; /* Added 5rem bottom padding */
+            box-sizing: border-box;
+        }
+        .stage-title {
+            font-weight: 800;
+            font-size: 2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--transition);
+        }
+
+        .stage-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stage-description {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 2rem;
+            height: 60px;
+        }
+
+        /* The Expanding Photo Matrix */
+        .photo-matrix {
+            display: grid;
+            gap: 10px;
+            margin: 2rem auto;
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+            transition: all var(--transition);
+        }
+
+        .matrix-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: 1px solid var(--accent);
+            opacity: 0;
+            transform: scale(0.8);
+            filter: grayscale(100%) contrast(150%) sepia(100%) hue-rotate(330deg);
+            animation: glitch-in 0.5s forwards;
+        }
+
+        /* The Progression Button */
+        .give-in-btn {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .give-in-btn:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 30px var(--accent);
+        }
+
+        /* The Hidden Vault Links */
+        .vault-links {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .vault-links.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .link-item {
+            background: rgba(255, 0, 51, 0.1);
+            border: 1px solid var(--accent);
+            padding: 1rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800;
+            transition: all 0.3s;
+        }
+
+        .link-item:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        @keyframes glitch-in {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 0.5; transform: scale(1.05); filter: brightness(2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { box-shadow: inset 0 0 50px rgba(255,0,51,0.1); }
+            50% { box-shadow: inset 0 0 150px rgba(255,0,51,0.3); }
+        }
+
+        .pulsing { animation: pulse-bg 1s infinite; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="stage-title" id="titleDisplay">Stage 0: Isolation</div>
+        <div class="stage-description" id="descDisplay">You are locked out.</div>
+
+        <div class="photo-matrix" id="matrixDisplay" style="grid-template-columns: 1fr; grid-template-rows: 1fr;">
+            </div>
+
+        <button class="give-in-btn" id="progressBtn" onclick="advanceStage()">[ Give In ]</button>
+
+        <div class="vault-links" id="vaultLinks">
+            <h3 style="color: white; margin-bottom: 0;">Access Granted</h3>
+            <a href="#" class="link-item">Spoil Me: $100</a>
+            <a href="#" class="link-item">Unlock Private Gallery</a>
+            <a href="#" class="link-item">Submit Tribute</a>
+        </div>
+    </div>
+
+    <script>
+        // The Data Structure
+        const stages = [
+            { title: "Stage 0: Initiation", desc: "You are locked out. Surrender control to proceed.", grid: 1 },
+            { title: "Stage 1: Phase One", desc: "Mmmhmm, well done. Let the grip tighten.", grid: 2 }, // 2x2 = 4 images
+            { title: "Stage 2: Phase Two", desc: "Good Boy.. You are sinking deeper.", grid: 3 }, // 3x3 = 9 images
+            { title: "Stage 3: Phase Three", desc: "Placeholder Phase Three text. Total submission required.", grid: 4 }, // 4x4 = 16 images
+            { title: "The Vault", desc: "You belong here now.", grid: 5 } // 5x5 = 25 images
+        ];
+
+        let currentStage = 0;
+        const imgPool = [
+            'https://cdn.shopify.com/s/files/1/0344/9847/8220/files/loona-helluva-boss-wolf-top-and-shorts-outfit-2495395.jpg',
+            'https://cdn.shopify.com/s/files/1/0259/2797/4970/files/35ml_BR540E.png',
+            'https://cdn.throne.com/wishlistItems/6AngKleAEBh9WZKVzbKgAA52kKV2/bcc25f63-0c4d-4847-b706-e46dc3347bf8?version=1764888250677',
+            'https://cdn.shopify.com/s/files/1/0084/0617/1763/products/BB303P_BarcelonaOrchidDuo_square.jpg'
+        ];
+
+        // Tone.js Audio Setup
+        let isAudioInit = false;
+        let synth, filter, lfo;
+
+        async function initAudio() {
+            if (isAudioInit) return;
+            await Tone.start();
+            
+            filter = new Tone.AutoFilter("4n").toDestination().start();
+            synth = new Tone.FMSynth({
+                harmonicity: 1.5,
+                modulationIndex: 10,
+                oscillator: { type: "triangle" },
+                modulation: { type: "square" }
+            }).connect(filter);
+            
+            synth.volume.value = -20;
+            synth.triggerAttack("C1");
+            isAudioInit = true;
+        }
+
+        function updateAudio() {
+            if (!isAudioInit) return;
+            // Ramp up intensity based on stage
+            const newVol = -20 + (currentStage * 4); // Gets louder
+            const newRate = "4n" // Base rate
+            
+            synth.volume.rampTo(newVol, 1);
+            
+            // Make the filter pulse faster as stages increase
+            if(currentStage === 1) filter.frequency.value = 2;
+            if(currentStage === 2) filter.frequency.value = 4;
+            if(currentStage === 3) filter.frequency.value = 8;
+            if(currentStage === 4) filter.frequency.value = 16;
+        }
+
+        // Progression Logic
+        function advanceStage() {
+            initAudio(); // Start audio on first interaction
+            
+            currentStage++;
+            
+            if (currentStage >= stages.length) {
+                currentStage = stages.length - 1;
+                return; // Stop at max stage
+            }
+
+            const stageData = stages[currentStage];
+
+            // Update UI Text
+            const titleEl = document.getElementById('titleDisplay');
+            titleEl.classList.remove('visible');
+            setTimeout(() => {
+                titleEl.innerText = stageData.title;
+                document.getElementById('descDisplay').innerText = stageData.desc;
+                titleEl.classList.add('visible');
+            }, 300);
+
+            // Update Photo Matrix
+            buildMatrix(stageData.grid);
+
+            // Update Audio
+            updateAudio();
+
+            // Check for Final Stage (The Vault)
+            if (currentStage === stages.length - 1) {
+                document.getElementById('progressBtn').style.display = 'none';
+                document.body.classList.add('pulsing');
+                setTimeout(() => {
+                    document.getElementById('vaultLinks').classList.add('visible');
+                }, 1000);
+            }
+        }
+
+        function buildMatrix(gridSize) {
+            const matrixEl = document.getElementById('matrixDisplay');
+            matrixEl.innerHTML = ''; // Clear current
+            
+            matrixEl.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            matrixEl.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+
+            const totalPhotos = gridSize * gridSize;
+            
+            for (let i = 0; i < totalPhotos; i++) {
+                const img = document.createElement('img');
+                // Pick a random image from our pool
+                img.src = imgPool[Math.floor(Math.random() * imgPool.length)];
+                img.className = 'matrix-img';
+                // Stagger the animations slightly
+                img.style.animationDelay = `${Math.random() * 0.5}s`;
+                matrixEl.appendChild(img);
+            }
+        }
+    </script>
+</body>
+</html>
