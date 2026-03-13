@@ -157,6 +157,35 @@
 
         .pulsing { animation: pulse-bg 1s infinite; }
 
+        .link-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 60px;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 30px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease, border-color var(--transition-speed), background var(--transition-speed);
+            backdrop-filter: blur(5px);
+            border: 2px solid white;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--hover-bg);
+            color: var(--hover-text);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+
     </style>
 </head>
 <body>
@@ -172,9 +201,28 @@
 
         <div class="vault-links" id="vaultLinks">
             <h3 style="color: white; margin-bottom: 0;">Access Granted</h3>
-            <a href="#" class="link-item">Spoil Me: $100</a>
-            <a href="#" class="link-item">Unlock Private Gallery</a>
-            <a href="#" class="link-item">Submit Tribute</a>
+                    <a href="https://throne.com/redhotjugs" target="_blank" class="link-card">
+            <span class="link-text">Throne | My Wishlist</span>
+            <a href="https://throne.com/redhotjugs" target="_blank" class="link-card">
+                <span class="link-text">Throne | My Wishlist</span>
+            </a>
+
+            <a href="https://onlyfans.com/redhotjugs" class="link-card">
+                <span class="link-text">Spicy 🌶️</span>
+            </a>
+
+            <a href="https://www.instagram.com/redhotjugs" target="_blank" class="link-card">
+                <span class="link-text">Instagram</span>
+            </a>
+
+            <a href="http://twitter.com/redhotjugs" target="_blank" class="link-card">
+                <span class="link-text">Twitter</span>
+            </a>
+
+            <a href="http://cash.app/$Sassysavvv" target="_blank" class="link-card">
+                <span class="link-text">Cashapp ✨</span>
+            </a>
+
         </div>
     </div>
 
@@ -184,7 +232,7 @@
             { title: "Stage 0: Initiation", desc: "You are locked out. Surrender control to proceed.", grid: 1 },
             { title: "Stage 1: Phase One", desc: "Mmmhmm, well done. Let the grip tighten.", grid: 2 }, // 2x2 = 4 images
             { title: "Stage 2: Phase Two", desc: "Good Boy.. You are sinking deeper.", grid: 3 }, // 3x3 = 9 images
-            { title: "Stage 3: Phase Three", desc: "Placeholder Phase Three text. Total submission required.", grid: 4 }, // 4x4 = 16 images
+            { title: "Stage 3: Phase Three", desc: "Amazing Baby, almost there. Total submission required.", grid: 4 }, // 4x4 = 16 images
             { title: "The Vault", desc: "You belong here now.", grid: 5 } // 5x5 = 25 images
         ];
 
@@ -193,7 +241,11 @@
             'https://cdn.shopify.com/s/files/1/0344/9847/8220/files/loona-helluva-boss-wolf-top-and-shorts-outfit-2495395.jpg',
             'https://cdn.shopify.com/s/files/1/0259/2797/4970/files/35ml_BR540E.png',
             'https://cdn.throne.com/wishlistItems/6AngKleAEBh9WZKVzbKgAA52kKV2/bcc25f63-0c4d-4847-b706-e46dc3347bf8?version=1764888250677',
-            'https://cdn.shopify.com/s/files/1/0084/0617/1763/products/BB303P_BarcelonaOrchidDuo_square.jpg'
+            'https://cdn.shopify.com/s/files/1/0084/0617/1763/products/BB303P_BarcelonaOrchidDuo_square.jpg',
+            'https://pbs.twimg.com/media/GYBPylnb0AMEZg4?format=jpg',
+            'https://pbs.twimg.com/media/GYxXMuhbQAQRmQu?format=jpg&name=900x900',
+            'https://pbs.twimg.com/media/GVdM0DrXwAIEpC6?format=jpg&name=medium',
+            'https://pbs.twimg.com/media/GKie1IdaEAAkxwO?format=jpg&name=small',
         ];
 
         // Tone.js Audio Setup

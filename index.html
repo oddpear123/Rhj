@@ -50,6 +50,7 @@
             transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
             overflow-x: hidden;
             position: relative;
+            background-image: url('https://pbs.twimg.com/media/GT6tEUWb0AMFRyN');
         }
 
         /* Floating background particles for princess mode */
@@ -307,6 +308,31 @@
             75% { transform: translate(-1px, 2px) rotate(0deg); }
             100% { transform: translate(1px, -1px) rotate(0deg); }
         }
+
+        .img-container {
+            display: grid;
+            /* Forces exactly 2 columns of equal width */
+            grid-template-columns: repeat(2, 1fr);
+            /* Optional: space between the photos */
+            gap: 10px; 
+            /* Forces the container to wrap tightly around the images */
+            width: fit-content; 
+            margin: 0 auto; /* Centers the whole block on the page */
+        }
+
+        .grid-item {
+            /* Using flex removes that annoying invisible 4px gap browsers put under inline images */
+            display: flex; 
+        }
+
+        .grid-item img {
+            /* Makes the images responsive within their grid cells */
+            max-width: 100%;
+            height: auto;
+            /* Optional: if your images are different sizes, use this to crop them into perfect squares without distortion */
+            /* aspect-ratio: 1 / 1; */
+            /* object-fit: cover; */
+        }
     </style>
 </head>
 <body>
@@ -325,7 +351,7 @@
             <span class="link-text">Throne | My Wishlist</span>
         </a>
 
-        <a href="#" class="link-card">
+        <a href="https://onlyfans.com/redhotjugs" class="link-card">
             <span class="link-text">Spicy 🌶️</span>
         </a>
 
@@ -340,6 +366,22 @@
         <a href="http://cash.app/$Sassysavvv" target="_blank" class="link-card">
             <span class="link-text">Cashapp ✨</span>
         </a>
+
+        <div class="img-container">
+            <div class="grid-item">
+                <img src="https://pbs.twimg.com/media/GYBPylnb0AMEZg4?format=jpg" />
+            </div>
+            <div class="grid-item">
+                <img src="https://pbs.twimg.com/media/GYxXMuhbQAQRmQu?format=jpg&name=900x900" />
+            </div>
+            </div>
+            <div class="grid-item">
+                <img src="https://pbs.twimg.com/media/GVdM0DrXwAIEpC6?format=jpg&name=medium" />
+            </div>
+            <div class="grid-item">
+                <img src="https://pbs.twimg.com/media/GKie1IdaEAAkxwO?format=jpg&name=small" />
+            </div>
+        </div>
     </div>
 
     <script>
