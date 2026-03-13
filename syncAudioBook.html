@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savanna | Guided Induction</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #05050a; /* Deep, bruising indigo */
+            color: #ffffff;
+            font-family: 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 5s ease;
+        }
+        #bg-image {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            filter: blur(10px);
+            transition: all 180s ease-in-out; /* 3-minute slow zoom/focus */
+            z-index: 0;
+        }
+        #ui-layer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+        .pulse-text {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            animation: pulse 4s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        button {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <img id="bg-image" src="" alt="Savanna">
+
+    <div id="ui-layer">
+        <p class="pulse-text">Put on your headphones.<br>Do I have your permission to guide you?</p>
+        <button id="start-btn">I Submit</button>
+    </div>
+
+    <script>
+        let currentSessionData = null;
+        let guidePlayer = null;
+
+        // 1. Fetch our "Database" (The JSON file hosted on GH Pages)
+        async function loadDatabase() {
+            try {
+                // In production, this would be your repo's data.json
+                // For this example, I'm mocking the payload LO would create
+                const mockDbResponse = {
+                    sessions: [
+                        {
+                            id: "deep-drop-01",
+                            title: "The Descent",
+                            audioFile: "./assets/bambiSleep.mp3",
+                            imageFile: "./assets/09CAFF8E-2D3D-4267-9A34-13ECE9D12593.png",
+                            startBpm: 60,
+                            targetBpm: 40,
+                            binauralFreq: 4
+                        }
+                    ]
+                };
+                
+                currentSessionData = mockDbResponse.sessions[0];
+                
+                // Preload the visual asset
+                document.getElementById('bg-image').src = currentSessionData.imageFile;
+                
+            } catch (error) {
+                console.error("Failed to load session data", error);
+            }
+        }
+
+        // 2. The Trance Logic
+        async function initiateTrance() {
+            // Hide the UI button, start the psychological contract
+            document.getElementById('ui-layer').style.opacity = '0';
+            
+            // Start the slow visual pull (sharpen and zoom)
+            const bgImage = document.getElementById('bg-image');
+            bgImage.style.filter = 'blur(0px)';
+            bgImage.style.transform = 'scale(1.05)';
+
+            // Initialize Audio Context
+            await Tone.start();
+
+            // Load the audio file defined in our JSON database
+            guidePlayer = new Tone.Player(currentSessionData.audioFile).toDestination();
+            await Tone.loaded();
+
+            // Setup the 60 BPM heartbeat
+            Tone.Transport.bpm.value = currentSessionData.startBpm;
+            
+            const heartSynth = new Tone.MembraneSynth().toDestination();
+            heartSynth.volume.value = -10;
+
+            const heartbeat = new Tone.Loop((time) => {
+                heartSynth.triggerAttackRelease("C2", "8n", time);
+            }, "4n").start(0);
+
+            // Setup Binaural Beat (Theta wave)
+            const leftOsc = new Tone.Oscillator(200, "sine").connect(new Tone.Panner(-1)).toDestination();
+            const rightOsc = new Tone.Oscillator(200 + currentSessionData.binauralFreq, "sine").connect(new Tone.Panner(1)).toDestination();
+            
+            leftOsc.volume.value = -15;
+            rightOsc.volume.value = -15;
+            leftOsc.start();
+            rightOsc.start();
+
+            // Start the sequence
+            Tone.Transport.start();
+            guidePlayer.start();
+
+            // Drag them down: Ramp from 60 BPM to 40 BPM over 5 minutes (300 seconds)
+            Tone.Transport.bpm.rampTo(currentSessionData.targetBpm, 300);
+
+            console.log(`Descending. Heartrate locked. Ramping to ${currentSessionData.targetBpm} BPM.`);
+        }
+
+        // Boot sequence
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDatabase();
+            document.getElementById('start-btn').addEventListener('click', initiateTrance);
+        });
+    </script>
+</body>
+</html>

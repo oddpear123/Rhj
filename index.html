@@ -23,7 +23,7 @@
             --image-filter: grayscale(0%) sepia(20%) hue-rotate(320deg);
         }
 
-        /* Toggled: Barbie Demon Theme */
+        /* Toggled: Demon Theme */
         [data-theme="demon"] {
             --bg-color: #0f0f0f;
             --text-color: #ff0033;
@@ -46,7 +46,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
             overflow-x: hidden;
             position: relative;
@@ -96,7 +96,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            margin: 0 auto 1rem;
+            margin: 2rem auto;
             background-image: url('https://ugc.production.linktr.ee/d71ebae8-a001-483a-aa09-a6ae0d842111_6AngKleAEBh9WZKVzbKgAA52kKV2.jpeg?io=true&size=thumbnail-stack_v1_0');
             background-size: cover;
             background-position: center;
@@ -309,34 +309,206 @@
             100% { transform: translate(1px, -1px) rotate(0deg); }
         }
 
-        .img-container {
+        /* Carousel */
+        .carousel {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 1.5rem auto;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid var(--card-border);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .carousel-track {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background: #000;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .carousel-slide.exit-left {
+            opacity: 0;
+            transform: translateX(-40%) scale(0.9);
+        }
+
+        .carousel-slide.exit-right {
+            opacity: 0;
+            transform: translateX(40%) scale(0.9);
+        }
+
+        .carousel-slide.enter-left {
+            opacity: 0;
+            transform: translateX(-40%) scale(0.9);
+        }
+
+        .carousel-slide.enter-right {
+            opacity: 0;
+            transform: translateX(40%) scale(0.9);
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: var(--image-filter);
+            transition: filter var(--transition-speed) ease;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            left: 0; right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0.5rem;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .carousel-btn {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            border: none;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .carousel-btn:hover {
+            background: var(--hover-bg);
+            color: var(--hover-text);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 0.75rem 0;
+            background: var(--card-bg);
+        }
+
+        .carousel-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            border: 1.5px solid var(--card-border);
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: var(--text-color);
+            transform: scale(1.3);
+        }
+        #banner {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://public.onlyfans.com/files/j/jd/jdc/jdcuvtfzw5ne5dolulri0zxwwwbwgnq31709177480/387693175/header.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px solid var(--card-border);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: all var(--transition-speed) ease;
+            filter: var(--image-filter);
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-grid {
             display: grid;
-            /* Forces exactly 2 columns of equal width */
-            grid-template-columns: repeat(2, 1fr);
-            /* Optional: space between the photos */
-            gap: 10px; 
-            /* Forces the container to wrap tightly around the images */
-            width: fit-content; 
-            margin: 0 auto; /* Centers the whole block on the page */
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 2.5rem;
+            width: 100%;
         }
 
-        .grid-item {
-            /* Using flex removes that annoying invisible 4px gap browsers put under inline images */
-            display: flex; 
+        .gallery-item {
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid var(--card-border);
+            box-shadow: 0 4px 10px var(--shadow-color);
+            transition: transform 0.3s ease;
         }
 
-        .grid-item img {
-            /* Makes the images responsive within their grid cells */
-            max-width: 100%;
-            height: auto;
-            /* Optional: if your images are different sizes, use this to crop them into perfect squares without distortion */
-            /* aspect-ratio: 1 / 1; */
-            /* object-fit: cover; */
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: var(--image-filter);
+        }
+
+        /* Hallucination Overlay */
+        #hallucination-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
+
+        #hallucination-overlay.active {
+            opacity: 1;
+        }
+
+        #hallucination-img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+            transform: scale(0.8);
+            transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1), filter 1s ease;
+            filter: none; /* No color effect for screenshot */
+        }
+
+        #hallucination-overlay.active #hallucination-img {
+            transform: scale(1);
         }
     </style>
 </head>
 <body>
-
+    <div id="hallucination-overlay">
+        <img id="hallucination-img" src="" alt="Hallucination">
+    </div>
+    <div id="banner"></div>
+    
     <div class="header" id="mainHeader">
         <div class="profile-pic" id="avatar"></div>
         <h1 id="mainTitle">Sav 💕</h1>
@@ -350,15 +522,15 @@
         <a href="https://throne.com/redhotjugs" target="_blank" class="link-card">
             <span class="link-text">Throne | My Wishlist</span>
         </a>
-
-        <a href="https://onlyfans.com/redhotjugs" class="link-card">
-            <span class="link-text">Spicy 🌶️</span>
-        </a>
-
+        
         <a href="https://www.instagram.com/redhotjugs" target="_blank" class="link-card">
             <span class="link-text">Instagram</span>
         </a>
 
+        <a href="https://onlyfans.com/redhotjugs" class="link-card">
+            <span class="link-text">Spicy 🌶️</span>
+        </a>
+        
         <a href="http://twitter.com/redhotjugs" target="_blank" class="link-card">
             <span class="link-text">Twitter</span>
         </a>
@@ -367,20 +539,15 @@
             <span class="link-text">Cashapp ✨</span>
         </a>
 
-        <div class="img-container">
-            <div class="grid-item">
-                <img src="https://pbs.twimg.com/media/GYBPylnb0AMEZg4?format=jpg" />
-            </div>
-            <div class="grid-item">
-                <img src="https://pbs.twimg.com/media/GYxXMuhbQAQRmQu?format=jpg&name=900x900" />
-            </div>
-            </div>
-            <div class="grid-item">
-                <img src="https://pbs.twimg.com/media/GVdM0DrXwAIEpC6?format=jpg&name=medium" />
-            </div>
-            <div class="grid-item">
-                <img src="https://pbs.twimg.com/media/GKie1IdaEAAkxwO?format=jpg&name=small" />
-            </div>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="assets/$Sassysavvv.svg" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/09CAFF8E-2D3D-4267-9A34-13ECE9D12593.png" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/926E8403-267A-4716-BE2E-667CCE454B03.jpeg" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/GTNg2UeaYAEKZc2.jpg" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/GVdM0DrXwAIEpC6.jpg" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/GYG5Ommb0AE95XD.jpg" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/GYxXMuhbQAQRmQu.jpg" alt="Gallery Image"></div>
+            <div class="gallery-item"><img src="assets/IMG_7296.jpeg" alt="Gallery Image"></div>
         </div>
     </div>
 
@@ -392,11 +559,15 @@
         // Tone.js Audio Elements
         let isAudioInitialized = false;
         let synth, distortion, autoFilter, droneGain;
+        let hallucinationLoop;
 
         async function initAudio() {
             if (isAudioInitialized) return;
             
             await Tone.start();
+            
+            // Set initial BPM
+            Tone.Transport.bpm.value = 60; 
             
             // Build the audio chain
             distortion = new Tone.Distortion(0).toDestination();
@@ -413,7 +584,47 @@
 
             synth.triggerAttack("C1");
             autoFilter.start();
+
+            // Create the hallucination loop
+            hallucinationLoop = new Tone.Loop((time) => {
+                // Only trigger hallucinations in state 3 (Vault Open)
+                if (currentState === 3) {
+                    Tone.Draw.schedule(() => {
+                        triggerHallucination();
+                    }, time);
+                }
+            }, "2m").start(0);
+
+            Tone.Transport.start();
             isAudioInitialized = true;
+        }
+
+        function triggerHallucination() {
+            const galleryImages = document.querySelectorAll('.gallery-grid img');
+            if (galleryImages.length === 0) return;
+
+            const randomImg = galleryImages[Math.floor(Math.random() * galleryImages.length)];
+            const overlay = document.getElementById('hallucination-overlay');
+            const overlayImg = document.getElementById('hallucination-img');
+
+            overlayImg.src = randomImg.src;
+            overlay.classList.add('active');
+
+            // Stay visible for 4 seconds (enough for screenshot)
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 4000);
+
+            // Dynamically speed up the BPM slightly each time
+            const currentBpm = Tone.Transport.bpm.value;
+            if (currentBpm < 120) {
+                Tone.Transport.bpm.rampTo(currentBpm + 2, 4);
+            }
+            
+            // Intensify frequency over time
+            if (hallucinationLoop.interval === "2m") hallucinationLoop.interval = "1m";
+            else if (hallucinationLoop.interval === "1m") hallucinationLoop.interval = "30s";
+            else if (hallucinationLoop.interval === "30s") hallucinationLoop.interval = "10s";
         }
 
         function updateAudioState() {
@@ -438,6 +649,7 @@
                 root.style.setProperty('--bg-color', '#ff99aa');
                 root.style.setProperty('--vignette', 'inset 0 0 50px rgba(255, 0, 51, 0.1)');
                 document.getElementById('subTitle').innerText = "A little further...";
+                document.getElementById('banner').style.display = 'block';
             } else if (currentState === 2) {
                 root.style.setProperty('--bg-color', '#4a0011');
                 root.style.setProperty('--text-color', '#ff0033');
@@ -448,6 +660,7 @@
                 root.style.setProperty('--vignette', 'inset 0 0 100px rgba(255, 0, 51, 0.4)');
                 document.getElementById('subTitle').innerText = "Almost there.";
                 document.getElementById('mainHeader').style.animation = "violent-shake 0.2s infinite";
+                document.getElementById('banner').style.display = 'block';
             } else if (currentState === 3) {
                 root.style.setProperty('--bg-color', '#050002');
                 root.style.setProperty('--card-bg', 'rgba(15, 0, 5, 0.9)');
@@ -460,6 +673,7 @@
                 document.getElementById('giveInBtn').style.display = "none";
                 document.getElementById('subTitle').innerText = "Access Granted.";
                 document.getElementById('avatar').style.animation = "breathe 1s infinite";
+                document.getElementById('banner').style.display = 'block';
                 
                 // Reveal the Vault
                 document.getElementById('vaultPanel').classList.add('active');
