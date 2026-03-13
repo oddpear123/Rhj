@@ -26,7 +26,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden; 
+            overflow-y: auto;
         }
 
         /* Scanlines */
@@ -38,16 +39,14 @@
             pointer-events: none;
             z-index: 999;
         }
-
         .container {
             text-align: center;
             z-index: 10;
             width: 100%;
             max-width: 800px;
-            padding: 2rem;
+            padding: 2rem 2rem 5rem 2rem; /* Added 5rem bottom padding */
             box-sizing: border-box;
         }
-
         .stage-title {
             font-weight: 800;
             font-size: 2rem;
@@ -183,8 +182,8 @@
         // The Data Structure
         const stages = [
             { title: "Stage 0: Initiation", desc: "You are locked out. Surrender control to proceed.", grid: 1 },
-            { title: "Stage 1: Phase One", desc: "Placeholder Phase One text. The grip tightens.", grid: 2 }, // 2x2 = 4 images
-            { title: "Stage 2: Phase Two", desc: "Placeholder Phase Two text. You are sinking deeper.", grid: 3 }, // 3x3 = 9 images
+            { title: "Stage 1: Phase One", desc: "Mmmhmm, well done. Let the grip tighten.", grid: 2 }, // 2x2 = 4 images
+            { title: "Stage 2: Phase Two", desc: "Good Boy.. You are sinking deeper.", grid: 3 }, // 3x3 = 9 images
             { title: "Stage 3: Phase Three", desc: "Placeholder Phase Three text. Total submission required.", grid: 4 }, // 4x4 = 16 images
             { title: "The Vault", desc: "You belong here now.", grid: 5 } // 5x5 = 25 images
         ];
