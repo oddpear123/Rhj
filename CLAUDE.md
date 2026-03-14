@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Red Hot Jugs is a subscription-based premium photo platform. Stack: FastAPI (async) + Vue 3 + Stripe + SQLite/Postgres + AWS S3.
+Red Hot Jugs is a subscription-based premium photo platform. Stack: FastAPI (async) + Vue 3 + Stripe + Oracle Autonomous DB + OCI Object Storage.
 
-Default admin credentials: `admin@rhj.com` / `admin1234`
+Admin credentials are stored in the backend `.env` file (not committed).
 
 ## Commands
 
