@@ -15,7 +15,7 @@ USE_LOCAL = not USE_OCI and not USE_S3
 
 # Local storage paths
 UPLOAD_DIR = Path(__file__).resolve().parent.parent.parent / "uploads"
-API_BASE = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_BASE = os.getenv("API_BASE_URL", "http://129.159.34.144:8000")
 
 if USE_LOCAL:
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)

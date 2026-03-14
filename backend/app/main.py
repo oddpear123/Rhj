@@ -25,16 +25,15 @@ app = FastAPI(
 )
 
 # CORS
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
-# Additional allowed origins (e.g., GitHub Pages)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://oddpear123.github.io")
 EXTRA_ORIGINS = os.getenv("ALLOWED_ORIGINS", "").split(",")
 ALLOWED_ORIGINS = [
-    FRONTEND_URL, 
-    "http://localhost:5173", 
+    FRONTEND_URL,
+    "https://oddpear123.github.io",
+    "http://129.159.34.144:8000",
+    "http://localhost:5173",
     "http://localhost:5174",
-    "https://oddpear123.github.io" # GitHub Pages URL
 ]
-# Clean up empty strings from split if any
 ALLOWED_ORIGINS.extend([o.strip() for o in EXTRA_ORIGINS if o.strip()])
 
 app.add_middleware(

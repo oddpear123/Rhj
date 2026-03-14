@@ -10,6 +10,7 @@ const routes = [
   { path: '/admin', component: () => import('./views/AdminPanel.vue') },
   { path: '/admin/upload', component: () => import('./views/Upload.vue') },
   { path: '/photo/:id', component: () => import('./views/PhotoDetail.vue') },
+  { path: '/linktree', component: () => import('./views/LinkTree.vue') },
 ]
 
 const router = createRouter({
