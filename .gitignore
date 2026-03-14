@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+backend/venv/
+backend/.pytest_cache/
+
+# Database
+backend/rhj.db
+*.db
+
+# Oracle wallet (credentials)
+backend/wallet/
+
+# Uploaded media (local storage)
+backend/uploads/
+
+# Environment files (secrets!)
+.env
+backend/.env
+backend/.env.production
+frontend/.env
+frontend/.env.production
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Playwright
+playwright-report/
+test-results/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Claude memory (personal)
+.claude/
+
+# Stale root-level backend copies
+/main.py
+/models.py
+/photos.py
+/subscription.py

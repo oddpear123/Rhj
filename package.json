@@ -1,0 +1,12 @@
+{
+  "name": "rhj-e2e",
+  "private": true,
+  "scripts": {
+    "test:e2e": "npx playwright test",
+    "test:smoke": "npx playwright test e2e/smoke.spec.ts",
+    "test:report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}
